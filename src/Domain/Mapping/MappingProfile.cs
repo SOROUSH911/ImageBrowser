@@ -27,8 +27,10 @@ namespace CleanArchitectureTemplate.Domain.Mapping
             {
                 var instance = Activator.CreateInstance(type);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var methodInfo = type.GetMethod("Mapping")
                     ?? type.GetInterface("IMapFrom`1").GetMethod("Mapping");
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 methodInfo?.Invoke(instance, new object[] { this });
 

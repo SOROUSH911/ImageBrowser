@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using FleetApi.AppCore;
+using CleanArchitectureTemplate.Domain.Mapping;
 using ImageBrowser.Application.Common.Behaviours;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -8,7 +8,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddAutoMapper(config => config.AddProfile(new MappingProfile());
+        services.AddAutoMapper(config => config.AddProfile(new MappingProfile()));
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
