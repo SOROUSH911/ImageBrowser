@@ -2,8 +2,11 @@
 using ImageBrowser.Domain.Constants;
 using ImageBrowser.Infrastructure.Data;
 using ImageBrowser.Infrastructure.Data.Interceptors;
+using ImageBrowser.Infrastructure.Extensiosn;
 using ImageBrowser.Infrastructure.Identity;
+using ImageBrowser.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +38,7 @@ public static class DependencyInjection
         services.AddAuthentication()
             .AddBearerToken(IdentityConstants.BearerScheme);
 
+
         services.AddAuthorizationBuilder();
 
         services
@@ -45,10 +49,19 @@ public static class DependencyInjection
 
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IIdentityService, IdentityService>();
+        services.AddFluentEmailWithSmtp(configuration);
+        services.AddTransient<IEmailService, EmailService>();
+        services.AddTransient<IEmailSender, EmailSender>();
 
-        services.AddAuthorization(options =>
-            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
-
+        services.AddAuthorizationBuilder()
+            .AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator));
+        //services.AddIdentityApiEndpoints<IdentityUser>(opt =>
+        //{
+        //    opt.Password.RequiredLength = 8;
+        //    opt.User.RequireUniqueEmail = true;
+        //    opt.Password.RequireNonAlphanumeric = false;
+        //    opt.SignIn.RequireConfirmedEmail = true;
+        //});
         return services;
     }
 }

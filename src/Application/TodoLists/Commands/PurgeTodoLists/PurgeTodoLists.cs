@@ -1,26 +1,26 @@
-﻿using ImageBrowser.Application.Common.Interfaces;
-using ImageBrowser.Application.Common.Security;
-using ImageBrowser.Domain.Constants;
+﻿//using ImageBrowser.Application.Common.Interfaces;
+//using ImageBrowser.Application.Common.Security;
+//using ImageBrowser.Domain.Constants;
 
-namespace ImageBrowser.Application.TodoLists.Commands.PurgeTodoLists;
+//namespace ImageBrowser.Application.TodoLists.Commands.PurgeTodoLists;
 
-[Authorize(Roles = Roles.Administrator)]
-[Authorize(Policy = Policies.CanPurge)]
-public record PurgeTodoListsCommand : IRequest;
+//[Authorize(Roles = Roles.Administrator)]
+//[Authorize(Policy = Policies.CanPurge)]
+//public record PurgeTodoListsCommand : IRequest;
 
-public class PurgeTodoListsCommandHandler : IRequestHandler<PurgeTodoListsCommand>
-{
-    private readonly IApplicationDbContext _context;
+//public class PurgeTodoListsCommandHandler : IRequestHandler<PurgeTodoListsCommand>
+//{
+//    private readonly IApplicationDbContext _context;
 
-    public PurgeTodoListsCommandHandler(IApplicationDbContext context)
-    {
-        _context = context;
-    }
+//    public PurgeTodoListsCommandHandler(IApplicationDbContext context)
+//    {
+//        _context = context;
+//    }
 
-    public async Task Handle(PurgeTodoListsCommand request, CancellationToken cancellationToken)
-    {
-        _context.TodoLists.RemoveRange(_context.TodoLists);
+//    public async Task Handle(PurgeTodoListsCommand request, CancellationToken cancellationToken)
+//    {
+//        _context.TodoLists.RemoveRange(_context.TodoLists);
 
-        await _context.SaveChangesAsync(cancellationToken);
-    }
-}
+//        await _context.SaveChangesAsync(cancellationToken);
+//    }
+//}

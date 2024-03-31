@@ -1,10 +1,10 @@
-﻿using ImageBrowser.Application.Common.Models;
+﻿//using ImageBrowser.Application.Common.Models;
 
-namespace ImageBrowser.Application.TodoLists.Queries.GetTodos;
+//namespace ImageBrowser.Application.TodoLists.Queries.GetTodos;
 
-public class TodosVm
-{
-    public IReadOnlyCollection<LookupDto> PriorityLevels { get; init; } = Array.Empty<LookupDto>();
+//public class TodosVm
+//{
+//    public IReadOnlyCollection<LookupDto> PriorityLevels { get; init; } = Array.Empty<LookupDto>();
 
-    public IReadOnlyCollection<TodoListDto> Lists { get; init; } = Array.Empty<TodoListDto>();
-}
+//    public IReadOnlyCollection<TodoListDto> Lists { get; init; } = Array.Empty<TodoListDto>();
+//}

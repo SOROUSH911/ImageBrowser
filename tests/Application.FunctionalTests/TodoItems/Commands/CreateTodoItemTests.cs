@@ -1,49 +1,49 @@
-﻿using ImageBrowser.Application.Common.Exceptions;
-using ImageBrowser.Application.TodoItems.Commands.CreateTodoItem;
-using ImageBrowser.Application.TodoLists.Commands.CreateTodoList;
-using ImageBrowser.Domain.Entities;
+﻿//using ImageBrowser.Application.Common.Exceptions;
+//using ImageBrowser.Application.TodoItems.Commands.CreateTodoItem;
+//using ImageBrowser.Application.TodoLists.Commands.CreateTodoList;
+//using ImageBrowser.Domain.Entities;
 
-namespace ImageBrowser.Application.FunctionalTests.TodoItems.Commands;
+//namespace ImageBrowser.Application.FunctionalTests.TodoItems.Commands;
 
-using static Testing;
+//using static Testing;
 
-public class CreateTodoItemTests : BaseTestFixture
-{
-    [Test]
-    public async Task ShouldRequireMinimumFields()
-    {
-        var command = new CreateTodoItemCommand();
+//public class CreateTodoItemTests : BaseTestFixture
+//{
+//    [Test]
+//    public async Task ShouldRequireMinimumFields()
+//    {
+//        var command = new CreateTodoItemCommand();
 
-        await FluentActions.Invoking(() =>
-            SendAsync(command)).Should().ThrowAsync<ValidationException>();
-    }
+//        await FluentActions.Invoking(() =>
+//            SendAsync(command)).Should().ThrowAsync<ValidationException>();
+//    }
 
-    [Test]
-    public async Task ShouldCreateTodoItem()
-    {
-        var userId = await RunAsDefaultUserAsync();
+//    [Test]
+//    public async Task ShouldCreateTodoItem()
+//    {
+//        var userId = await RunAsDefaultUserAsync();
 
-        var listId = await SendAsync(new CreateTodoListCommand
-        {
-            Title = "New List"
-        });
+//        var listId = await SendAsync(new CreateTodoListCommand
+//        {
+//            Title = "New List"
+//        });
 
-        var command = new CreateTodoItemCommand
-        {
-            ListId = listId,
-            Title = "Tasks"
-        };
+//        var command = new CreateTodoItemCommand
+//        {
+//            ListId = listId,
+//            Title = "Tasks"
+//        };
 
-        var itemId = await SendAsync(command);
+//        var itemId = await SendAsync(command);
 
-        var item = await FindAsync<TodoItem>(itemId);
+//        var item = await FindAsync<TodoItem>(itemId);
 
-        item.Should().NotBeNull();
-        item!.ListId.Should().Be(command.ListId);
-        item.Title.Should().Be(command.Title);
-        item.CreatedBy.Should().Be(userId);
-        item.Created.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(10000));
-        item.LastModifiedBy.Should().Be(userId);
-        item.LastModified.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(10000));
-    }
-}
+//        item.Should().NotBeNull();
+//        item!.ListId.Should().Be(command.ListId);
+//        item.Title.Should().Be(command.Title);
+//        item.CreatedBy.Should().Be(userId);
+//        item.Created.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(10000));
+//        item.LastModifiedBy.Should().Be(userId);
+//        item.LastModified.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(10000));
+//    }
+//}

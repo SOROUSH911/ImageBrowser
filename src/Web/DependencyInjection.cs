@@ -13,6 +13,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
+
+
+        //this might be adding the html page for database related exceptions like migration.
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddScoped<IUser, CurrentUser>();
@@ -24,7 +27,7 @@ public static class DependencyInjection
 
         services.AddExceptionHandler<CustomExceptionHandler>();
 
-        services.AddRazorPages();
+        //services.AddRazorPages();
 
         // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options =>
@@ -63,4 +66,24 @@ public static class DependencyInjection
 
         return services;
     }
+
+    public static IServiceCollection AddSsmParametersIfConfigured(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        var ssmParameterPath = configuration["SsmParameterPath"];
+        if (!string.IsNullOrWhiteSpace(ssmParameterPath))
+        {
+            // Add the AWS Systems Manager Parameter Store configuration source
+            configuration.AddSystemsManager(configureSource =>
+            {
+                configureSource.Path = ssmParameterPath;
+                //configureSource.Prefix = ssmParameterPath;
+                configureSource.ReloadAfter = TimeSpan.FromMinutes(5); // Set the reload interval
+                configureSource.AwsOptions = configuration.GetAWSOptions(); // Use the default AWS options
+            });
+        }
+
+        return services;
+    }
+
+
 }
