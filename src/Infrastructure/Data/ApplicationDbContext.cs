@@ -15,8 +15,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     //public DbSet<TodoList> TodoLists => Set<TodoList>();
 
     //public DbSet<TodoItem> TodoItems => Set<TodoItem>();
-    public DbSet<User> AppUsers { get; }
-    public DbSet<Domain.Entities.File> Files { get; }
+    public DbSet<Client> Clients { get; set; }
+    public DbSet<User> AppUsers { get; set; }
+    public DbSet<Domain.Entities.File> Files { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

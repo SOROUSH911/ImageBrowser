@@ -49,12 +49,18 @@ public static class DependencyInjection
 
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IIdentityService, IdentityService>();
-        services.AddFluentEmailWithSmtp(configuration);
-        services.AddTransient<IEmailService, EmailService>();
-        services.AddTransient<IEmailSender, EmailSender>();
+        services.AddTransient<ITokenFactory, TokenFactory>();
+        //services.AddFluentEmailWithSmtp(configuration);
+        //services.AddTransient<IEmailService, EmailService>();
+        //services.AddTransient<IEmailSender, EmailSender>();
+        services.AddTransient<IFileProvider, FileProvider>();
+        services.AddTransient<IAppUserIdService, AppUserIdService>();
 
         services.AddAuthorizationBuilder()
             .AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator));
+
+        //services.AddAntiforgery();
+
         //services.AddIdentityApiEndpoints<IdentityUser>(opt =>
         //{
         //    opt.Password.RequiredLength = 8;

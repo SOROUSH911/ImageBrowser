@@ -1,20 +1,27 @@
+using Amazon.S3;
+using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Data;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //builder.Services.AddKeyVaultIfConfigured(builder.Configuration);
 builder.Services.AddSsmParametersIfConfigured(builder.Configuration);
-
+builder.Services.AddAWSService<IAmazonS3>();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebServices();
 
-var app = builder.Build();
-var somevalue = builder.Configuration.GetValue<string>("random_value");
+builder.Services.Configure<AmazonConfiguration>(opts => builder.Configuration.GetSection("AmazonConfiguration").Bind(opts));
+//var tokenConfig = JsonConvert.DeserializeObject<TokenConfiguration>(builder.Configuration.GetSection("TokenConfiguration").Value);
+builder.Services.Configure<TokenConfiguration>(opts => builder.Configuration.GetSection("TokenConfiguration").Bind(opts));
 
-Console.WriteLine("This is my value*************" + somevalue + "\n ***************");
+var app = builder.Build();
+var somevalue = builder.Configuration.GetValue<string>("TokenConfiguration");
+
+Console.WriteLine("Test SSM value" + somevalue);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -32,7 +39,6 @@ else
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseSwaggerUi(settings =>
 {
     settings.Path = "/api";
@@ -51,7 +57,7 @@ app.UseSwaggerUi(settings =>
 //app.UseExceptionHandler(options => { });
 
 app.Map("/", () => Results.Redirect("/api"));
-
+//app.UseAntiforgery();
 app.MapEndpoints();
 
 app.Run();

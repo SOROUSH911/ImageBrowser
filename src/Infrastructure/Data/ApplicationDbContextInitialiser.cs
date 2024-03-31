@@ -5,6 +5,7 @@ using ImageBrowser.Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -30,13 +31,15 @@ public class ApplicationDbContextInitialiser
     private readonly ApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IConfiguration _configuration;
 
-    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
     {
         _logger = logger;
         _context = context;
         _userManager = userManager;
         _roleManager = roleManager;
+        _configuration = configuration;
     }
 
     public async Task InitialiseAsync()
@@ -86,6 +89,27 @@ public class ApplicationDbContextInitialiser
                 await _userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
             }
         }
+
+
+
+        //Default data
+        // Seed, if necessary
+        //_context.Clients.ExecuteDelete();
+        if (!_context.Clients.Any())
+            {
+                _context.Clients.Add(new Client
+                {
+                    Id = "WebClientId",
+                    Name = "WebClient",
+                    Active = true,
+                    AccessTokenLifeTime = 86400,
+                    RefreshTokenLifeTime = 604800,
+                    ApplicationType = 0,
+                    Secret = _configuration["WebClientSecret"] ?? throw new Exception("WebClientSecret is null")
+                });
+
+                await _context.SaveChangesAsync();
+            }
 
         // Default data
         // Seed, if necessary
