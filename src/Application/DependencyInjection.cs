@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using CleanArchitectureTemplate.Domain.Mapping;
 using ImageBrowser.Application.Common.Behaviours;
+using ImageBrowser.Application.Common.Middlewares;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -12,7 +14,9 @@ public static class DependencyInjection
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-        services.AddMediatR(cfg => {
+
+        services.AddMediatR(cfg =>
+        {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
@@ -20,6 +24,19 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
 
+
+
+
+        //services.AddMassTransit(x =>
+        //{
+        //    x.AddConsumer<SubmitOrderConsumer>();
+
+        //    x.UsingRabbitMq((context, cfg) =>
+        //    {
+        //        cfg.ConfigureEndpoints(context);
+        //    });
+        //});
+        //services.AddTransient<IMiddleware, ExceptionHandlingMiddleware>();
         return services;
     }
 }

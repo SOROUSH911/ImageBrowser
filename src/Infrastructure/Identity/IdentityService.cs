@@ -46,13 +46,18 @@ public class IdentityService : IIdentityService
         return user?.UserName;
     }
 
-    public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
-    {
-        var user = new ApplicationUser
+    public async Task<(Result Result, string UserId)> CreateUserAsync(string password, string firstName, string lastName, string email, string phone, int appUserId)
         {
-            UserName = userName,
-            Email = userName,
-        };
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                PhoneNumber = phone,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                SignUpDate = DateTime.UtcNow,
+                AppUserId = appUserId
+            };
 
         var result = await _userManager.CreateAsync(user, password);
 
@@ -228,7 +233,8 @@ public class IdentityService : IIdentityService
                 Token = tokenString,
                 RefreshToken = refToken,
                 Roles = role,
-                ExpiresIn = tokens.ExpiresIn
+                ExpiresIn = tokens.ExpiresIn,
+                IsSuccess = true
             };
         }
         catch (Exception e)

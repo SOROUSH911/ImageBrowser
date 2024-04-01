@@ -1,4 +1,5 @@
-﻿using ImageBrowser.Application.Accounts.Command;
+﻿using ImageBrowser.Application.Accounts.Commands;
+using ImageBrowser.Application.Accounts.Queries;
 using ImageBrowser.Application.Common.Models;
 using ImageBrowser.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -14,12 +15,24 @@ public class AccountsEndpoint : EndpointGroupBase
         app.MapGroup(this)
 
         //.MapIdentityApi<ApplicationUser>();
-        .MapPost(SignIn, "Login");
+        .MapPost(SignIn, "Login")
+        .MapPost(SignUp, "SignUp")
+        .MapGet(GetProfile, "GetProfile");
         //app.MapPost("logout", async (SignInManager<IdentityUser> signInManager) =>
         // {
         //     await signInManager.SignOutAsync().ConfigureAwait(false);
         // }).RequireAuthorization();
     }
+
+
+
+    [AllowAnonymous]
+    [HttpPost("SignUp")]
+    public async Task<ServiceResult> SignUp(ISender sender, SignUpCommand command)
+    {
+        return await sender.Send(command);
+    }
+
 
 
 
@@ -30,6 +43,15 @@ public class AccountsEndpoint : EndpointGroupBase
     {
         command.IsAdminPanel = false;
         return await sender.Send(command);
+    }
+
+
+
+    [HttpGet("Get-Profile")]
+    public async Task<UserDto> GetProfile(ISender sender)
+    {
+        var res = await sender.Send(new GetProfileQuery());
+        return res;
     }
 
     //[AllowAnonymous]

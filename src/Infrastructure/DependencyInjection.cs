@@ -1,20 +1,27 @@
-﻿using ImageBrowser.Application.Common.Interfaces;
+﻿using System.Text;
+using ImageBrowser.Application.Common.Interfaces;
 using ImageBrowser.Domain.Constants;
+using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Data;
 using ImageBrowser.Infrastructure.Data.Interceptors;
 using ImageBrowser.Infrastructure.Extensiosn;
 using ImageBrowser.Infrastructure.Identity;
 using ImageBrowser.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
+
+    private const string CorsName = "api";
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -35,8 +42,48 @@ public static class DependencyInjection
 
         services.AddScoped<ApplicationDbContextInitialiser>();
 
-        services.AddAuthentication()
-            .AddBearerToken(IdentityConstants.BearerScheme);
+        var tokenConfig = JsonConvert.DeserializeObject<TokenConfiguration>(configuration.GetSection("TokenConfiguration").Value);
+        var secretToken = tokenConfig.SecretToken; //configuration.GetSection("TokenConfiguration:SecretToken");
+        var secreturl = tokenConfig.VarifiedSecretUrl; //configuration.GetSection("TokenConfiguration:VarifiedSecretUrl");
+
+
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+             .AddJwtBearer(options =>
+             {
+                 options.TokenValidationParameters = new TokenValidationParameters()
+                 {
+
+                     ValidateIssuer = true,
+                     ValidateAudience = false,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = secreturl,
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretToken)),
+                     ClockSkew = TimeSpan.Zero
+                 };
+                 options.Events = new JwtBearerEvents
+                 {
+                     OnMessageReceived = context =>
+                     {
+                         var accessToken = context.Request.Query["access_token"];
+
+                         return Task.CompletedTask;
+                     }
+                 };
+             });
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy(CorsName, builder =>
+            {
+                builder.WithOrigins()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .AllowAnyOrigin();
+            });
+        });
 
 
         services.AddAuthorizationBuilder();

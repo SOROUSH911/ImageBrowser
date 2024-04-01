@@ -1,6 +1,8 @@
 using Amazon.S3;
+using ImageBrowser.Application.Common.Middlewares;
 using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Data;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,17 +13,19 @@ builder.Services.AddSsmParametersIfConfigured(builder.Configuration);
 builder.Services.AddAWSService<IAmazonS3>();
 
 builder.Services.AddApplicationServices();
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebServices();
+builder.Services.AddConfigurations(builder.Configuration);
 
-builder.Services.Configure<AmazonConfiguration>(opts => builder.Configuration.GetSection("AmazonConfiguration").Bind(opts));
-//var tokenConfig = JsonConvert.DeserializeObject<TokenConfiguration>(builder.Configuration.GetSection("TokenConfiguration").Value);
-builder.Services.Configure<TokenConfiguration>(opts => builder.Configuration.GetSection("TokenConfiguration").Bind(opts));
 
-var app = builder.Build();
 var somevalue = builder.Configuration.GetValue<string>("TokenConfiguration");
 
-Console.WriteLine("Test SSM value" + somevalue);
+
+
+var app = builder.Build();
+
+//Console.WriteLine("Test SSM value" + somevalue);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -56,10 +60,15 @@ app.UseSwaggerUi(settings =>
 //app.UseDeveloperExceptionPage();
 //app.UseExceptionHandler(options => { });
 
+
+
+
 app.Map("/", () => Results.Redirect("/api"));
 //app.UseAntiforgery();
 app.MapEndpoints();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();
 
 public partial class Program { }

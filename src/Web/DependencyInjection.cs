@@ -1,9 +1,10 @@
 ﻿using Azure.Identity;
 using ImageBrowser.Application.Common.Interfaces;
+using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Data;
 using ImageBrowser.Web.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
@@ -81,6 +82,20 @@ public static class DependencyInjection
                 configureSource.AwsOptions = configuration.GetAWSOptions(); // Use the default AWS options
             });
         }
+
+        return services;
+    }
+
+    public static IServiceCollection AddConfigurations(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        services.Configure<AmazonConfiguration>(opts => configuration.GetSection("AmazonConfiguration").Bind(opts));
+        var tokenConfig = JsonConvert.DeserializeObject<TokenConfiguration>(configuration.GetSection("TokenConfiguration").Value);
+        services.Configure<TokenConfiguration>(opts =>
+        {
+            opts.VarifiedSecretUrl = tokenConfig.VarifiedSecretUrl;
+            opts.SecretToken = tokenConfig.SecretToken;
+            opts.EncRefPassword = tokenConfig.EncRefPassword;
+        });
 
         return services;
     }

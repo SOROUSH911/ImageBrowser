@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ImageBrowser.Application.Common.Interfaces;
 using ImageBrowser.Application.Common.Models;
 
-namespace ImageBrowser.Application.Accounts.Command;
+namespace ImageBrowser.Application.Accounts.Commands;
 public class SignInCommand : IRequest<TokenDto>
 {
     public TokenRequest LoginRequest { get; set; }

@@ -38,6 +38,58 @@
         }
       }
     },
+    "/api/AccountsEndpoint/SignUp": {
+      "post": {
+        "tags": [
+          "AccountsEndpoint"
+        ],
+        "operationId": "SignUp",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AccountsEndpoint/GetProfile": {
+      "get": {
+        "tags": [
+          "AccountsEndpoint"
+        ],
+        "operationId": "GetProfile",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/FilesEndpoint": {
       "post": {
         "tags": [
@@ -354,6 +406,67 @@
           510,
           511
         ]
+      },
+      "SignUpCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "User": {
+            "$ref": "#/components/schemas/CreateUserDto"
+          }
+        }
+      },
+      "CreateUserDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "Password": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "UserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FirstName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "ImageUrl": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "PhoneNumber": {
+            "type": "string"
+          },
+          "ImageId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "WeatherForecast": {
         "type": "object",

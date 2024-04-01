@@ -67,7 +67,8 @@ public class FileProvider : IFileProvider
 
         string TempPath = Path.GetTempPath();
         string fileName = Path.GetFileName(file.FileName);
-        string fullName = Path.Combine(TempPath, fileName + Guid.NewGuid().ToString("N"));
+        string guidName = Path.GetFileNameWithoutExtension(fileName) + Guid.NewGuid().ToString("N");
+        string fullName = Path.Combine(TempPath, guidName);
         try
         {
             //var fileTransferUtility = new TransferUtility(_awsS3Client);
@@ -94,7 +95,7 @@ public class FileProvider : IFileProvider
 
             using (var fileToUpload = new FileStream(fullName, FileMode.Open, FileAccess.Read))
             {
-                await fileTransferUtility.UploadAsync(fileToUpload, bucketName, fullName);
+                await fileTransferUtility.UploadAsync(fileToUpload, bucketName, guidName);
             }
 
 
@@ -132,9 +133,9 @@ public class FileProvider : IFileProvider
         };
         dbContext.Files.Add(newFile);
 
-        await dbContext.SaveChangesAsync(new CancellationToken());
+        var key = await dbContext.SaveChangesAsync(new CancellationToken());
 
-        return new ServiceResult { Error = "File uploaded Successfully", StatusCode = HttpStatusCode.OK };
+        return new ServiceResult { Error = "File uploaded Successfully", StatusCode = HttpStatusCode.OK, Key =  key};
     }
 
     /// <summary>
