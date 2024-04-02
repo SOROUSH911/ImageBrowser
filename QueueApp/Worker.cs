@@ -23,7 +23,7 @@ public class Worker : BackgroundService
         {
             await _bus.Publish(new ExtractImageAttributesEvent { FileId = 5 }, stoppingToken);
 
-            await Task.Delay(1000, stoppingToken);
+            await Task.Delay(10000000, stoppingToken);
         }
     }
 }

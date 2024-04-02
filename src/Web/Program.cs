@@ -24,7 +24,6 @@ var somevalue = builder.Configuration.GetValue<string>("TokenConfiguration");
 
 
 var app = builder.Build();
-
 //Console.WriteLine("Test SSM value" + somevalue);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
