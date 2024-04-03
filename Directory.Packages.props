@@ -16,6 +16,7 @@
     <PackageVersion Include="FluentEmail.Smtp" Version="3.0.2" />
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1" />
+    <PackageVersion Include="IronOcr" Version="2024.3.4" />
     <PackageVersion Include="MassTransit" Version="8.2.0" />
     <PackageVersion Include="MassTransit.RabbitMQ" Version="8.2.0" />
     <PackageVersion Include="MediatR" Version="12.2.0" />
@@ -48,6 +49,8 @@
     <PackageVersion Include="NUnit.Analyzers" Version="3.9.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="Respawn" Version="6.1.0" />
+    <PackageVersion Include="Tesseract" Version="5.2.0" />
+    <PackageVersion Include="Tesseract.Net.SDK" Version="4.6.411" />
     <PackageVersion Include="Testcontainers.MsSql" Version="3.6.0" />
   </ItemGroup>
 </Project>

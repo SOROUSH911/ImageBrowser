@@ -127,7 +127,7 @@ public class FileProvider : IFileProvider
         var newFile = new Domain.Entities.File
         {
             Name = file.FileName,
-            Path = fullName,
+            Path = guidName,
             Size = file.Length,
             OwnerId = appUser.UserId
         };
@@ -155,8 +155,8 @@ public class FileProvider : IFileProvider
         };
         string responseBody;
 
-        using (var response = await client.GetObjectAsync(request))
-        using (var responseStream = response.ResponseStream)
+        var response = await client.GetObjectAsync(request);
+        //using (var responseStream = response.ResponseStream)
             //using (var reader = new StreamReader(responseStream))
             //{
             //    var title = response.Metadata["x-amz-meta-title"];

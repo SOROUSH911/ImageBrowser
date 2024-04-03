@@ -19,9 +19,9 @@ public class FilesEndpoint : EndpointGroupBase
     [HttpPost("upload")]
     [RequestFormLimits(MultipartBodyLengthLimit = 52428800)]
     [RequestSizeLimit(52428800)]
-    public async Task<ServiceResult> Upload(ISender sender, IFormFile file, string path)
+    public async Task<ServiceResult> Upload(ISender sender, IFormFile file)
     {
-        var res = await sender.Send(new AddFileCommand { Upload = file, Path = path });
+        var res = await sender.Send(new AddFileCommand { Upload = file, Path = null });
         return res;
     }
 

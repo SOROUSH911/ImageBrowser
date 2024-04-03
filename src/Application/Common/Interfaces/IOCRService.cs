@@ -8,5 +8,5 @@ using Microsoft.AspNetCore.Http;
 namespace ImageBrowser.Application.Common.Interfaces;
 public interface IOCRService
 {
-    Task<List<string>> ExtractText(FileStream file);
+    Task<string> ExtractText(string key);
 }

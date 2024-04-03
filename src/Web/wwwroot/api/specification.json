@@ -96,17 +96,6 @@
           "FilesEndpoint"
         ],
         "operationId": "Upload",
-        "parameters": [
-          {
-            "name": "path",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {

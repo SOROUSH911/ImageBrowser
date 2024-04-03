@@ -24,7 +24,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     {
         base.OnModelCreating(builder);
         builder.Entity<Domain.Entities.File>()
-           .HasOne(i => i.Owner).WithOne();
+           .HasOne(i => i.Owner).WithMany();
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }

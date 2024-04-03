@@ -3,6 +3,7 @@ using Amazon.S3;
 using Humanizer.Configuration;
 using ImageBrowser.Application.Common.Interfaces;
 using ImageBrowser.Infrastructure;
+using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication;
@@ -49,6 +50,8 @@ internal static class Program
             IConfigurationRoot newConf = builder.Build();
             services.AddSingleton(newConf);
             services.AddAWSService<IAmazonS3>();
+            services.Configure<AmazonConfiguration>(opts => hostContext.Configuration.GetSection("AmazonConfiguration").Bind(opts));
+
             services.AddDatabaseContext(hostContext.Configuration);
             //services
             //    .Configure<FieldValueTypes>(configuration.GetSection("FieldValueTypes"))
@@ -62,6 +65,8 @@ internal static class Program
             services.AddTransient<IAppUserIdService, MockAppUserIdService>();
             services.AddTransient<IUser, MockCurrentUser>();
             services.AddTransient<IFileProvider, FileProvider>();
+            services.AddTransient<IOCRService, OCRService>();
+
             //.AddTransient<ISearchEngineServices, SearchEngineServices>()
 
 

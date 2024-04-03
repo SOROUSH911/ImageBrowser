@@ -94,8 +94,7 @@ namespace ImageBrowser.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId")
-                        .IsUnique();
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Files");
                 });
@@ -472,8 +471,8 @@ namespace ImageBrowser.Infrastructure.Data.Migrations
             modelBuilder.Entity("ImageBrowser.Domain.Entities.File", b =>
                 {
                     b.HasOne("ImageBrowser.Domain.Entities.User", "Owner")
-                        .WithOne()
-                        .HasForeignKey("ImageBrowser.Domain.Entities.File", "OwnerId")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
