@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="MediatR" />
+    <PackageReference Include="SolrNet.Core" />
   </ItemGroup>
 
 </Project>

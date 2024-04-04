@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ImageBrowser.Application.Common.Interfaces;
 using ImageBrowser.Domain.Constants;
+using ImageBrowser.Domain.SearchEngine;
 using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Data;
 using ImageBrowser.Infrastructure.Data.Interceptors;
@@ -26,6 +27,10 @@ public static class DependencyInjection
     {
 
         services.AddDatabaseContext(configuration);
+
+
+
+        
 
         var tokenConfig = JsonConvert.DeserializeObject<TokenConfiguration>(configuration.GetSection("TokenConfiguration").Value);
         var secretToken = tokenConfig.SecretToken; //configuration.GetSection("TokenConfiguration:SecretToken");

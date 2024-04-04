@@ -1,5 +1,7 @@
-﻿using Azure.Identity;
+﻿using System.Text;
+using Azure.Identity;
 using ImageBrowser.Application.Common.Interfaces;
+using ImageBrowser.Domain.SearchEngine;
 using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Data;
 using ImageBrowser.Web.Services;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using SolrNet;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -96,6 +99,22 @@ public static class DependencyInjection
             opts.SecretToken = tokenConfig.SecretToken;
             opts.EncRefPassword = tokenConfig.EncRefPassword;
         });
+
+        return services;
+    }
+
+    public static IServiceCollection AddSolrNetDependencyInjection(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        var solrServerAddress = configuration["SolrServerAddress"];
+
+        var collectionName = configuration["SolrCollectionName"];
+
+        //var username = configuration["SOLR_USER"];
+        //var password = configuration["SOLR_PASSWORD"];
+
+        //var basicAuthHeader = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic",
+        //    Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}")));
+        services.AddSolrNet<IBDataSchema>($"{solrServerAddress}/{collectionName}"/*, options => options.HttpClient.DefaultRequestHeaders.Authorization = basicAuthHeader*/);
 
         return services;
     }

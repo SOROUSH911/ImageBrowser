@@ -50,6 +50,9 @@
     <PackageVersion Include="NUnit.Analyzers" Version="3.9.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="Respawn" Version="6.1.0" />
+    <PackageVersion Include="SolrNet" Version="1.1.1" />
+    <PackageVersion Include="SolrNet.Core" Version="1.1.1" />
+    <PackageVersion Include="SolrNet.Microsoft.DependencyInjection" Version="1.1.1" />
     <PackageVersion Include="Tesseract" Version="5.2.0" />
     <PackageVersion Include="Tesseract.Net.SDK" Version="4.6.411" />
     <PackageVersion Include="Testcontainers.MsSql" Version="3.6.0" />

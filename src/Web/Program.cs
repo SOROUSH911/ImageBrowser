@@ -1,9 +1,12 @@
+using System.Text;
 using Amazon.S3;
 using ImageBrowser.Application.Common.Middlewares;
+using ImageBrowser.Domain.SearchEngine;
 using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Data;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using SolrNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,8 @@ builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebServices();
 builder.Services.AddConfigurations(builder.Configuration);
+builder.Services.AddSolrNetDependencyInjection(builder.Configuration);
+
 
 
 var somevalue = builder.Configuration.GetValue<string>("TokenConfiguration");

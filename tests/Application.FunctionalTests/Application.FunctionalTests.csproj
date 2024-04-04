@@ -30,6 +30,7 @@
         <PackageReference Include="FluentAssertions" />
         <PackageReference Include="Moq" />
         <PackageReference Include="Respawn" />
+        <PackageReference Include="SolrNet" />
         <PackageReference Include="Testcontainers.MsSql" />
     </ItemGroup>
     
