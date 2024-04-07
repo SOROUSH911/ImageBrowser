@@ -97,8 +97,8 @@ internal static class Program
             services.AddDatabaseContext(hostContext.Configuration);
 
             //var solrServerAddress = hostContext.Configuration["SolrServerAddress"];
-            var solrServerAddress = parameters.Single(p=> p.Name.Contains("SolrServerAddress")).Value;
-
+            //var solrServerAddress = parameters.Single(p=> p.Name.Contains("SolrServerAddress")).Value;
+            var solrServerAddress = "http://solr:8983/solr";
             var collectionName = parameters.Single(p => p.Name.Contains("SolrCollectionName")).Value;
             //var collectionName = hostContext.Configuration["SolrCollectionName"];
 
@@ -126,7 +126,7 @@ internal static class Program
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host("localhost", "/", h =>
+                    cfg.Host("rabbitmq", "/", h =>
                     {
                         h.Username("guest");
                         h.Password("guest");

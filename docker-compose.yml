@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  web:
+    image: ${DOCKER_REGISTRY-}web
+    build:
+      context: .
+      dockerfile: src/Web/Dockerfile
+    depends_on:
+      - solr
+      - rabbitmq
+    volumes:
+     - C:\Users\The Effrontery\.aws\credentials:/home/app/.aws/credentials:ro
+
+  queueapp:
+    image: ${DOCKER_REGISTRY-}queueapp
+    build:
+      context: .
+      dockerfile: QueueApp/Dockerfile
+    depends_on:
+      - solr
+      - rabbitmq
+    volumes:
+     - C:\Users\The Effrontery\.aws\credentials:/home/app/.aws/credentials:ro
+  solr:
+    image: solr
+    container_name: my_solr
+    command:
+      - solr-precreate
+      - gettingstarted
+    volumes:
+      - ./solrdata:/var/solr
+    ports:
+      - "8983:8983"
+
+  rabbitmq:
+    image: masstransit/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
