@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: docker/setup-docker@v2
+    - name: Build the Docker image
+      run: |
+          # Replace 'myproject' with your actual project name
+          # Specify the paths to your Dockerfiles
+          # You can add more steps for additional Dockerfiles
+          docker build -t web-app:$(date +%s) -f src/Web/Dockerfile .
+          docker build -t queue-ap:$(date +%s) -f QueueApp/Dockerfile .
+          
