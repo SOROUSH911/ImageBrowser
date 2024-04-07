@@ -11,6 +11,8 @@ COPY ["QueueApp/QueueApp.csproj", "QueueApp/"]
 COPY ["src/Application/Application.csproj", "src/Application/"]
 COPY ["src/Domain/Domain.csproj", "src/Domain/"]
 COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+COPY Directory.Build.props ./
+COPY Directory.Packages.props ./
 RUN dotnet restore "./QueueApp/QueueApp.csproj"
 COPY . .
 WORKDIR "/src/QueueApp"

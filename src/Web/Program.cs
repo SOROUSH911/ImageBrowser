@@ -2,8 +2,10 @@ using System.Text;
 using Amazon.S3;
 using ImageBrowser.Application.Common.Middlewares;
 using ImageBrowser.Domain.SearchEngine;
+using ImageBrowser.Infrastructure;
 using ImageBrowser.Infrastructure.Configurations;
 using ImageBrowser.Infrastructure.Data;
+using MassTransit;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SolrNet;
@@ -24,6 +26,19 @@ builder.Services.AddSolrNetDependencyInjection(builder.Configuration);
 
 
 
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
 var somevalue = builder.Configuration.GetValue<string>("TokenConfiguration");
 
 

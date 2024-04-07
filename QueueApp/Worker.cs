@@ -21,7 +21,7 @@ public class Worker : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await _bus.Publish(new ExtractImageAttributesEvent { FileId = 11 }, stoppingToken);
+            //await _bus.Publish(new ExtractImageAttributesEvent { FileId = 11 }, stoppingToken);
 
             await Task.Delay(10000000, stoppingToken);
         }

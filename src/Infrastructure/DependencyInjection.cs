@@ -92,6 +92,7 @@ public static class DependencyInjection
         //services.AddTransient<IEmailSender, EmailSender>();
         services.AddTransient<IFileProvider, FileProvider>();
         services.AddTransient<IAppUserIdService, AppUserIdService>();
+        services.AddTransient<IOCRService, OCRService>();
 
         services.AddAuthorizationBuilder()
             .AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator));

@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ImageBrowser.Application.Common.Models;
 using System.Threading;
+using MassTransit;
+using ImageBrowser.Application.Common.Event;
 
 namespace ImageBrowser.Infrastructure.Services;
 public class FileProvider : IFileProvider
@@ -32,13 +34,15 @@ public class FileProvider : IFileProvider
     TransferUtility fileTransferUtility;
     private readonly AmazonConfiguration amazonConfiguration;
     private readonly IAppUserIdService appUser;
+    private readonly IBus _bus;
     private readonly IAmazonS3 client;
     private readonly IApplicationDbContext dbContext;
 
-    public FileProvider(IAmazonS3 client, IApplicationDbContext dbContext, IAppUserIdService appUser, IOptions<AmazonConfiguration> amazonConfiguration)
+    public FileProvider(IAmazonS3 client, IApplicationDbContext dbContext, IAppUserIdService appUser, IOptions<AmazonConfiguration> amazonConfiguration, IBus bus)
     {
         this.amazonConfiguration = amazonConfiguration.Value;
         this.appUser = appUser;
+        _bus = bus;
         this.client = client;
         this.dbContext = dbContext;
         RegisterAmazonS3();
@@ -133,7 +137,10 @@ public class FileProvider : IFileProvider
         };
         dbContext.Files.Add(newFile);
 
-        var key = await dbContext.SaveChangesAsync(new CancellationToken());
+        var token = new CancellationToken();
+        var key = await dbContext.SaveChangesAsync(token);
+        await _bus.Publish(new ExtractImageAttributesEvent { FileId = newFile.Id }, token);
+
 
         return new ServiceResult { Error = "File uploaded Successfully", StatusCode = HttpStatusCode.OK, Key =  key};
     }
