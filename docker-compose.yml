@@ -9,6 +9,7 @@ services:
     depends_on:
       - solr
       - rabbitmq
+      - dbup
     volumes:
      - C:\Users\The Effrontery\.aws\credentials:/home/app/.aws/credentials:ro
 
@@ -20,6 +21,7 @@ services:
     depends_on:
       - solr
       - rabbitmq
+      - dbup
     volumes:
      - C:\Users\The Effrontery\.aws\credentials:/home/app/.aws/credentials:ro
   solr:
@@ -32,10 +34,21 @@ services:
       - ./solrdata:/var/solr
     ports:
       - "8983:8983"
+    depends_on:
+      - dbup
 
   rabbitmq:
     image: masstransit/rabbitmq
     ports:
       - "15672:15672"
       - "5672:5672"
+    depends_on:
+      - dbup
 
+
+  dbup:
+    image: ${DOCKER_REGISTRY-}dbup
+    build:
+      context: .
+      dockerfile: DbUp/Dockerfile
+    restart: "no"

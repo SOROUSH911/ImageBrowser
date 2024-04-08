@@ -1,4 +1,5 @@
-﻿using ImageBrowser.Domain.Entities;
+﻿using System.Data;
+using ImageBrowser.Domain.Entities;
 using File = ImageBrowser.Domain.Entities.File;
 
 namespace ImageBrowser.Application.Common.Interfaces;
@@ -14,6 +15,9 @@ public interface IApplicationDbContext
     DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
-
+    IDbConnection GetDbConnection();
+    Task CommitTransactionAsync();
+    Task BeginTransactionAsync();
+    void RollbackTransaction();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

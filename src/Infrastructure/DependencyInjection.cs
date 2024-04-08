@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Xml.Linq;
 using ImageBrowser.Application.Common.Interfaces;
 using ImageBrowser.Domain.Constants;
 using ImageBrowser.Domain.SearchEngine;
@@ -13,9 +14,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Npgsql;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +28,7 @@ public static class DependencyInjection
     private const string CorsName = "api";
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+      
 
         services.AddDatabaseContext(configuration);
 
@@ -112,7 +116,19 @@ public static class DependencyInjection
 
     public static IServiceCollection AddDatabaseContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+        String connectionString = null;
+        //if (!isDevelopment)
+        //{
+            var ssmParameterPath = configuration["SsmParameterPath"];
+            var parameters = ParametersService.RetrieveParametersWithDecryption(ssmParameterPath).Result;
+            connectionString = parameters.Single(p => p.Name.Equals(ssmParameterPath + "ProductionConnection")).Value;
+        //}
+        //else
+        //{
+        //    connectionString = configuration.GetConnectionString("DefaultConnection");
+        //}
 
         Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
 
@@ -123,7 +139,21 @@ public static class DependencyInjection
         {
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
-            options.UseSqlServer(connectionString);
+            //if (isDevelopment) {
+            //    //options.UseSqlServer(connectionString);
+            //    }
+            //else {
+                options.UseNpgsql(
+                connectionString,
+                builder =>
+                {
+                    builder.UseNetTopologySuite();
+                    builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+                });
+
+                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            //}
+
         });
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());

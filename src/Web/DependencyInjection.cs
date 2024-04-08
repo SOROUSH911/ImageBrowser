@@ -79,10 +79,12 @@ public static class DependencyInjection
             // Add the AWS Systems Manager Parameter Store configuration source
             configuration.AddSystemsManager(configureSource =>
             {
+                
                 configureSource.Path = ssmParameterPath;
                 //configureSource.Prefix = ssmParameterPath;
                 configureSource.ReloadAfter = TimeSpan.FromMinutes(5); // Set the reload interval
                 configureSource.AwsOptions = configuration.GetAWSOptions(); // Use the default AWS options
+                
             });
         }
 
