@@ -26,39 +26,39 @@ internal static class Program
 
 
 
-    public static async Task<List<Parameter>> retrieveParameters(string parameterName)
-    {
+    //public static async Task<List<Parameter>> retrieveParameters(string parameterName)
+    //{
 
-        var ssmClient = new AmazonSimpleSystemsManagementClient(RegionEndpoint.USEast1); // Change region as needed
+    //    var ssmClient = new AmazonSimpleSystemsManagementClient(RegionEndpoint.USEast1); // Change region as needed
 
-        try
-        {
-            var request = new GetParametersByPathRequest
-            {
-                Path = parameterName,
-                WithDecryption = true // Set to true if the parameter is encrypted
-            };
+    //    try
+    //    {
+    //        var request = new GetParametersByPathRequest
+    //        {
+    //            Path = parameterName,
+    //            WithDecryption = true // Set to true if the parameter is encrypted
+    //        };
 
-            var response = await ssmClient.GetParametersByPathAsync(request);
+    //        var response = await ssmClient.GetParametersByPathAsync(request);
 
-            //if (response.Parameters.Count > 0)
-            //{
-            //    Console.WriteLine($"Parameter Value: {String.Join(", ", response.Parameters.Select(p => p.Value))}");
-            //}
-            //else
-            //{
-            //    Console.WriteLine($"Parameter '{parameterName}' not found.");
-            //}
+    //        //if (response.Parameters.Count > 0)
+    //        //{
+    //        //    Console.WriteLine($"Parameter Value: {String.Join(", ", response.Parameters.Select(p => p.Value))}");
+    //        //}
+    //        //else
+    //        //{
+    //        //    Console.WriteLine($"Parameter '{parameterName}' not found.");
+    //        //}
 
-            return response.Parameters;
+    //        return response.Parameters;
 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error retrieving parameter: {ex.Message}");
-            throw new Exception("Something went wrong");
-        }
-    }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Console.WriteLine($"Error retrieving parameter: {ex.Message}");
+    //        throw new Exception("Something went wrong");
+    //    }
+    //}
    
 
     public static IHostBuilder CreateHostBuilder(string[] args)
@@ -80,7 +80,7 @@ internal static class Program
             services.AddAWSService<IAmazonSimpleSystemsManagement>();
             ConfigurationBuilder builder = new ConfigurationBuilder();
             var ssmParameterPath = hostContext.Configuration["SsmParameterPath"];
-            var parameters = retrieveParameters(ssmParameterPath).Result;
+            var parameters = ParametersService.RetrieveParametersWithDecryption(ssmParameterPath).Result;
 
             //builder.AddSystemsManager(configureSource =>
             //{
@@ -93,6 +93,7 @@ internal static class Program
             //services.AddSingleton(newConf);
             services.AddAWSService<IAmazonS3>();
             services.Configure<AmazonConfiguration>(opts => hostContext.Configuration.GetSection("AmazonConfiguration").Bind(opts));
+            //bool isProduction = hostContext.HostingEnvironment.IsProduction();
 
             services.AddDatabaseContext(hostContext.Configuration);
 

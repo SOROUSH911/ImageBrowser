@@ -5,7 +5,8 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "web": "StartDebugging",
-        "queueapp": "StartDebugging"
+        "queueapp": "StartDebugging",
+        "dbup": "StartDebugging"
       }
     }
   }

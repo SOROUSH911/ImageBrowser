@@ -69,6 +69,7 @@ public class SignUpCommand : IRequest<ServiceResult>
                 return ServiceResult.Failure("image_file_notfound");
 
             }
+            await dbContext.BeginTransactionAsync();
             var appUser = new User
             {
                 FirstName = request.User.FirstName,
@@ -90,12 +91,18 @@ public class SignUpCommand : IRequest<ServiceResult>
                 //}
 
                 //multiobjectfiles
+                if (!createUserRes.Result.Succeeded)
+                {
+                  throw new Exception(String.Join(", ", createUserRes.Result.Errors));
+                }
+                    await dbContext.CommitTransactionAsync();
             }
-            catch
+            catch(Exception ex)
             {
-                dbContext.AppUsers.Remove(appUser);
-                await dbContext.SaveChangesAsync(cancellationToken);
-                return ServiceResult.Failure("error_createuser" );
+                //dbContext.AppUsers.Remove(appUser);
+                //await dbContext.SaveChangesAsync(cancellationToken);
+                dbContext.RollbackTransaction();
+                return ServiceResult.Failure("error_createuser" + "\n " + ex.Message);
             }
 
 

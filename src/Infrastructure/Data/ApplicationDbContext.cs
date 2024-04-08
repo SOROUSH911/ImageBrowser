@@ -5,10 +5,12 @@ using ImageBrowser.Domain.Entities;
 using ImageBrowser.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.Options;
 
 namespace ImageBrowser.Infrastructure.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : AppDbContextBase, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -20,9 +22,22 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<Domain.Entities.File> Files { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .UseSnakeCaseNamingConvention();
+
+    }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.Entity<HistoryRow>().HasKey(h => h.MigrationId);
+        builder.Entity<HistoryRow>().Property(h => h.MigrationId).HasColumnName("migration_id");
+        builder.Entity<HistoryRow>().Property(h => h.ProductVersion).HasColumnName("product_version");
+
+
         builder.Entity<Domain.Entities.File>()
            .HasOne(i => i.Owner).WithMany();
 

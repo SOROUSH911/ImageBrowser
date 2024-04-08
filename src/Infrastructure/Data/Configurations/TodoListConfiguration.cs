@@ -1,18 +1,18 @@
-﻿using ImageBrowser.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿//using ImageBrowser.Domain.Entities;
+//using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ImageBrowser.Infrastructure.Data.Configurations;
+//namespace ImageBrowser.Infrastructure.Data.Configurations;
 
-public class TodoListConfiguration : IEntityTypeConfiguration<TodoList>
-{
-    public void Configure(EntityTypeBuilder<TodoList> builder)
-    {
-        builder.Property(t => t.Title)
-            .HasMaxLength(200)
-            .IsRequired();
+//public class TodoListConfiguration : IEntityTypeConfiguration<TodoList>
+//{
+//    public void Configure(EntityTypeBuilder<TodoList> builder)
+//    {
+//        builder.Property(t => t.Title)
+//            .HasMaxLength(200)
+//            .IsRequired();
 
-        builder
-            .OwnsOne(b => b.Colour);
-    }
-}
+//        builder
+//            .OwnsOne(b => b.Colour);
+//    }
+//}
