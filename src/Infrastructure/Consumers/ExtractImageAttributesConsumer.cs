@@ -3,6 +3,7 @@
 
 using System.Threading.Tasks;
 using ImageBrowser.Application.Common.Event;
+using ImageBrowser.Application.Common.Helpers;
 using ImageBrowser.Application.Common.Interfaces;
 using ImageBrowser.Domain.SearchEngine;
 using MassTransit;
@@ -48,7 +49,7 @@ IConsumer<ExtractImageAttributesEvent>
 
         var p = new IBDataSchema
         {
-            Id = $"file_{file.Id}",
+            Id = SolrHelper.GetEntitySolrId(file.Id),
 
             Categories = null,
             TextContent = wordsList,

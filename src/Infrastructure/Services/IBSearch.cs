@@ -17,7 +17,7 @@ internal class IBSearch : ISearchService
     {
         _solrOperations = solrOperations;
     }
-    public async Task<SearchResponse> DoSearch(SearchQuery query)
+    public async Task<SearchResponse> DoSearch(SearchQuery query, int? userId = null)
     {
         ////Create an object to hold results
         //FiltersFacets filtersFacets = new FiltersFacets();
@@ -32,18 +32,28 @@ internal class IBSearch : ISearchService
             OriginalQuery = query
         };
 
+        var filterQueries = new List<ISolrQuery>();
+
+
+        if (userId.HasValue)
+        {
+            filterQueries.Add(new SolrQueryByField(IBDataSchema.ownerIdField, userId.ToString()));
+        }
+
         //Get a connection
         QueryOptions queryOptions = new QueryOptions
         {
             Rows = query.Rows,
             StartOrCursor = new StartOrCursor.Start(query.Start),
+            FilterQueries = filterQueries,
             //FilterQueries = filtersFacets.BuildFilterQueries(query),
             //Facet = filtersFacets.BuildFacets(query.Pivots),
             //Stats = filtersFacets.BuildStats(),
             //Highlight = highlights.BuildHighlightParameters(),
             //ExtraParams = extraParameters.BuildExtraParameters(query),
             Fields = { "*", "score" },
-            Grouping = query.Grouping.Fields.Count == 0 ? null : new GroupingParameters() { Fields = query.Grouping.Fields, Limit = query.Grouping.Limit, Format = GroupingFormat.Grouped, },
+            
+            //Grouping = query.Grouping.Fields.Count == 0 ? null : new GroupingParameters() { Fields = query.Grouping.Fields, Limit = query.Grouping.Limit, Format = GroupingFormat.Grouped, },
         };
 
         if (!string.IsNullOrEmpty(query.Sort))
