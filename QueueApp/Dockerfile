@@ -3,6 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
+USER app
 # Install libs for Tesseract
 #USER root
 #RUN apt-get update && \

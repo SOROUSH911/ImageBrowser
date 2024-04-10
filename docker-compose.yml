@@ -37,10 +37,9 @@ services:
      - C:\Users\The Effrontery\.aws\credentials:/home/app/.aws/credentials:ro
   solr:
     image: solr
-    container_name: my_solr
     command:
       - solr-precreate
-      - gettingstarted
+      - default_core
     volumes:
       - ./solrdata:/var/solr
     ports:
