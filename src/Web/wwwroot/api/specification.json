@@ -90,7 +90,7 @@
         }
       }
     },
-    "/api/FilesEndpoint": {
+    "/api/FilesEndpoint/UploadFile": {
       "post": {
         "tags": [
           "FilesEndpoint"
@@ -119,6 +119,43 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ServiceResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/FilesEndpoint/SearchFiles": {
+      "post": {
+        "tags": [
+          "FilesEndpoint"
+        ],
+        "operationId": "SearchFiles",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchFilesQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResultOfFileDto"
                 }
               }
             }
@@ -454,6 +491,141 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "QueryResultOfFileDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileDto"
+            }
+          },
+          "Total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FileDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Path": {
+            "type": "string"
+          },
+          "Size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "OwnerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ObjectUrl": {
+            "type": "string"
+          },
+          "Created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SearchFilesQuery": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PageQuery"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "PageQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Lang": {
+            "type": "string"
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SortField": {
+            "type": "string"
+          },
+          "DataProfileSort": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Search": {
+            "type": "string"
+          },
+          "IsIndex": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "IsExport": {
+            "type": "boolean"
+          },
+          "FilterGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterGroup"
+            }
+          },
+          "FilterFacets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterGroup"
+            }
+          }
+        }
+      },
+      "FilterGroup": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Label": {
+            "type": "string"
+          },
+          "Min": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Max": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DateMin": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "DateMax": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Icon": {
+            "type": "string"
+          },
+          "IsOpen": {
+            "type": "boolean"
+          },
+          "FieldValueType": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

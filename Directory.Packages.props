@@ -61,7 +61,7 @@
     <PackageVersion Include="SolrNet.Core" Version="1.1.1" />
     <PackageVersion Include="SolrNet.Microsoft.DependencyInjection" Version="1.1.1" />
     <PackageVersion Include="Tesseract" Version="5.2.0" />
-    <PackageVersion Include="Tesseract.Net.SDK" Version="4.6.411" />
+    <PackageVersion Include="Tesseract.Net.SDK" Version="4.1.411" />
     <PackageVersion Include="Testcontainers.MsSql" Version="3.6.0" />
   </ItemGroup>
 </Project>

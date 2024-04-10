@@ -14,8 +14,8 @@ public class FilesEndpoint : EndpointGroupBase
         app.MapGroup(this)
             .DisableAntiforgery()
             .RequireAuthorization()
-            .MapPost(Upload)
-            .MapPost(SearchFiles);
+            .MapPost(Upload, "UploadFile")
+            .MapPost(SearchFiles, "SearchFiles");
     }
 
 

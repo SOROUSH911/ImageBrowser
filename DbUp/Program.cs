@@ -1,9 +1,12 @@
 ﻿using DbUp;
-using ImageBrowser.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
 Console.WriteLine("Running DbUp");
+
+
+
+
 
 
 var basePath = "/imagebrowser/";
