@@ -1,9 +1,6 @@
-﻿# README
+# README
 
 # ImageBrowser
-
-The project was generated using the [Clean.Architecture.Solution.Template](https://github.com/jasontaylordev/ImageBrowser)
-version 8.0.5.
 
 ## Setup before build
 
@@ -142,9 +139,20 @@ docker compose -f docker-compose.yml -f docker-compose.yml \
 
 ## Clean Architecture and CQRS
 
+**ImageBrowser** is a .NET Core REST API application that demonstrates the implementation of **Clean Architecture**, **CQRS**, and **Domain-Driven Design (DDD)** principles. It allows users to browse and manage images efficiently using extracting features (text and description of the image) and indexing it into a Search engine (solr).
+
+for more info check out how the Clean Architecture pattern is working in ImageBrowser:
+
+[Clean Architecture and CQRS](https://www.notion.so/Clean-Architecture-and-CQRS-4ab1575c4fc14414822d351cfcf116d8?pvs=21) 
+
+The project was generated using the [Clean.Architecture.Solution.Template](https://github.com/jasontaylordev/ImageBrowser)
+version 8.0.5.
+
 ## Authentication and Authorization
 
 ## File Upload and Large object pattern
+
+[File Upload an Large Object Pattern](https://www.notion.so/File-Upload-an-Large-Object-Pattern-b6d911df1fb7455c98d681350ddb32cf?pvs=21) 
 
 ## Distributed System Event bus Using Masstransit and rabbit mq
 
