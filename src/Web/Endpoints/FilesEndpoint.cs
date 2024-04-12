@@ -1,6 +1,8 @@
 ﻿
 using ImageBrowser.Application.Common.Models;
 using ImageBrowser.Application.Files.Commands;
+using ImageBrowser.Application.Files.Queries;
+using ImageBrowser.Domain.SearchEngine;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageBrowser.Web.Endpoints;
@@ -12,7 +14,8 @@ public class FilesEndpoint : EndpointGroupBase
         app.MapGroup(this)
             .DisableAntiforgery()
             .RequireAuthorization()
-            .MapPost(Upload);
+            .MapPost(Upload, "UploadFile")
+            .MapPost(SearchFiles, "SearchFiles");
     }
 
 
@@ -24,5 +27,13 @@ public class FilesEndpoint : EndpointGroupBase
         var res = await sender.Send(new AddFileCommand { Upload = file, Path = null });
         return res;
     }
+
+    public async Task<QueryResult<FileDto>> SearchFiles(ISender sendwer, SearchFilesQuery query)
+    {
+        var res = await sendwer.Send(query);
+        return res;
+    }
+
+
 
 }

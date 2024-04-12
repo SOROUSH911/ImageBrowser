@@ -114,8 +114,9 @@ internal static class Program
             services.AddTransient<IAppUserIdService, MockAppUserIdService>();
             services.AddTransient<IUser, MockCurrentUser>();
             services.AddTransient<IFileProvider, FileProvider>();
-            services.AddTransient<IOCRService, OCRService>();
 
+            //services.AddTransient<IOCRService, OCRService>();
+            services.AddTransient<IOCRService, IronOCRService>();
             //.AddTransient<ISearchEngineServices, SearchEngineServices>()
 
 

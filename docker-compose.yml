@@ -1,6 +1,17 @@
 version: '3.4'
 
 services:
+
+
+  dbup:
+    image: ${DOCKER_REGISTRY-}dbup
+    build:
+      context: .
+      dockerfile: DbUp/Dockerfile
+    restart: "no"
+    volumes:
+     - C:\Users\The Effrontery\.aws\credentials:/home/app/.aws/credentials:ro
+
   web:
     image: ${DOCKER_REGISTRY-}web
     build:
@@ -26,10 +37,9 @@ services:
      - C:\Users\The Effrontery\.aws\credentials:/home/app/.aws/credentials:ro
   solr:
     image: solr
-    container_name: my_solr
     command:
       - solr-precreate
-      - gettingstarted
+      - default_core
     volumes:
       - ./solrdata:/var/solr
     ports:
@@ -45,10 +55,15 @@ services:
     depends_on:
       - dbup
 
+  # postgres:
+  #   image: postgres:latest
+  #   container_name: my-postgres-db
+  #   environment:
+  #     POSTGRES_DB: mydatabase
+  #     POSTGRES_USER: myuser
+  #     POSTGRES_PASSWORD: mypassword
+  #   ports:
+  #     - "5432:5432"
 
-  dbup:
-    image: ${DOCKER_REGISTRY-}dbup
-    build:
-      context: .
-      dockerfile: DbUp/Dockerfile
-    restart: "no"
+
+

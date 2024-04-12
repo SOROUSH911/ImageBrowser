@@ -97,6 +97,7 @@ public static class DependencyInjection
         services.AddTransient<IFileProvider, FileProvider>();
         services.AddTransient<IAppUserIdService, AppUserIdService>();
         services.AddTransient<IOCRService, OCRService>();
+        services.AddTransient<ISearchService, IBSearch>();
 
         services.AddAuthorizationBuilder()
             .AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator));

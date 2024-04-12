@@ -8,5 +8,6 @@ using ImageBrowser.Domain.SearchEngine;
 namespace ImageBrowser.Application.Common.Interfaces;
 public interface ISearchService
 {
-    Task<SearchResponse> DoSearch(SearchQuery query);
+    Task<SearchResponse> DoSearch(SearchQuery query, int? userId = null);
+
 }

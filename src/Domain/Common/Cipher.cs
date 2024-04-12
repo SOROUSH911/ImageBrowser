@@ -76,7 +76,7 @@ public static class Cipher
 
         using (var ms = new MemoryStream())
         {
-            using (var AES = new AesCng())
+            using (var AES = Aes.Create())
             {
                 var key = new Rfc2898DeriveBytes(passwordBytes, saltBytes, 1000);
 
@@ -110,7 +110,7 @@ public static class Cipher
 
         using (var ms = new MemoryStream())
         {
-            using (var AES = new AesCng())
+            using (var AES = Aes.Create())
             {
                 var key = new Rfc2898DeriveBytes(passwordBytes, saltBytes, 1000);
 

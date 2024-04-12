@@ -13,6 +13,9 @@ using SolrNet;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+//If you're using Azure Vault uncomment this
 //builder.Services.AddKeyVaultIfConfigured(builder.Configuration);
 builder.Services.AddSsmParametersIfConfigured(builder.Configuration);
 builder.Services.AddAWSService<IAmazonS3>();
@@ -30,7 +33,7 @@ builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("localhost", "/", h =>
+        cfg.Host("rabbitmq", "/", h =>
         {
             h.Username("guest");
             h.Password("guest");
