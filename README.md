@@ -120,7 +120,7 @@ in this case our ConnectionString would be
 ```
 
 <aside>
-💡 Make sure to replace ProductionConnection inside your [Secret Parameters](https://www.notion.so/README-ec219da4001241bcb7f9ccdbbf96da22?pvs=21).
+💡 Make sure to replace ProductionConnection inside your Secret Parameters.
 
 </aside>
 
