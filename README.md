@@ -11,7 +11,19 @@ version 8.0.5.
 
 you need to setup a S3 Bucket 
 
-### Secret Parameters sample appsettings.json
+### Secret Parameters
+
+Here is a  sample appsettings.json that you can either set as environment variable to your docker containers:
+
+- Web
+    - Needs all the configuration
+- QueueApp
+    - ProducitonConnection
+    - SolrServerAddress
+    - SolrCollectionName
+    - AmazonConfiguration
+- DbUp
+    - only Needs ProducitonConnection
 
 ```json
 {
@@ -108,7 +120,7 @@ in this case our ConnectionString would be
 ```
 
 <aside>
-💡 Make sure to replace ProductionConnection inside your Secret Parameter values.
+💡 Make sure to replace ProductionConnection inside your [Secret Parameters](https://www.notion.so/README-ec219da4001241bcb7f9ccdbbf96da22?pvs=21).
 
 </aside>
 
